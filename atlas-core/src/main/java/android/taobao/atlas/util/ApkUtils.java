@@ -224,6 +224,7 @@ import java.util.zip.ZipFile;
 import android.taobao.atlas.hack.AssertionArrayException;
 import android.taobao.atlas.hack.AtlasHacks;
 import android.taobao.atlas.runtime.RuntimeVariables;
+import android.taobao.atlas.util.log.impl.AtlasMonitor;
 
 public class ApkUtils {
 
@@ -366,6 +367,9 @@ public class ApkUtils {
             while ((realLength = input.read(buffers)) > 0) {
                 channel.write(ByteBuffer.wrap(buffers, 0, realLength));
             }
+        } catch (IOException e) {
+            AtlasMonitor.getInstance().report(AtlasMonitor.CONTAINER_BUNDLE_SOURCE_UNZIP_FAIL, null, e);
+            throw new IOException(e);
         } finally {
             if (input != null) try {
             	input.close();
